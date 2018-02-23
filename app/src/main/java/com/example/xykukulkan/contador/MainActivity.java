@@ -10,7 +10,7 @@ public class MainActivity extends AppCompatActivity {
     protected Button btnContar;
     private Button btnReiniciar;
     private EditText editContador;
-    private int contador;
+    private int contador = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,14 +20,28 @@ public class MainActivity extends AppCompatActivity {
         btnReiniciar = (Button)this.findViewById(R.id.botonReiniciar);
         editContador = (EditText)this.findViewById(R.id.campoConteo);
 
+        this.restore(savedInstanceState);
         btnContar.setOnClickListener( e -> {
-            contador = Integer.parseInt(editContador.getText().toString());
+            //contador = Integer.parseInt(editContador.getText().toString());
             contador += 1;
             editContador.setText(Integer.toString(contador));
         });
 
         btnReiniciar.setOnClickListener( e -> {
-            editContador.setText(Integer.toString(contador));
+            editContador.setText("0");
+            contador = 0;
         });
+    }
+
+    protected void restore(Bundle bundle){
+        super.onRestoreInstanceState(bundle);
+        contador = bundle.getInt("CONT");
+        editContador.setText(Integer.toString(contador));
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState){
+        super.onSaveInstanceState(outState);
+        outState.putInt("CONT", contador);
     }
 }
